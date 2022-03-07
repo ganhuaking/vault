@@ -21,12 +21,19 @@ jobs:
       - name: Add .nojekyll file
         run: touch www/.nojekyll
 
+      - name: Add Licence file
+        run: cp ./LICENSE www/
+
+      - name: Add CNAME
+        run: echo meetups.ganhuaking.tw > www/CNAME
+
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@4.1.9
         with:
           token: ${{ secrets.GH_PAT }} 
           branch: gh-pages
           repository-name: ganhuaking/meetups
+          single-commit: true
           folder: www
           clean: true
           clean-exclude: |

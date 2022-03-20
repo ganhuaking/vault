@@ -70,4 +70,4 @@
 				- 這個東西就太神奇了，網站上查到的資料是，若資料有三維空間概念的話，可以用這個方法去取對應座標的資料。
 			- SEARCH
 				- > Proposed only. The index (etc) identified by the URL is to be searched for something matching in some sense the enclosed message. How does the client know what message fromats are acceptable to the server? (Suggestion of Fred Williams)
-				- 這段也有也難懂，後來是直接看範例來確認
+				- 這段很難懂，因為只是個建議，也沒有範例。看建議內容推測，最初的問題在於要如何知道 server 可接受的參數或格式？現在常見的做法像是提供 Swagger 文件，或是實作 [HATEOAS](https://openhome.cc/Gossip/Spring/HATEOAS.html) 的概念，讓 API 的回傳成為文件，也有助於解決最初的問題。

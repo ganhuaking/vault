@@ -71,3 +71,28 @@
 			- SEARCH
 				- > Proposed only. The index (etc) identified by the URL is to be searched for something matching in some sense the enclosed message. How does the client know what message fromats are acceptable to the server? (Suggestion of Fred Williams)
 				- 這段很難懂，因為只是個建議，也沒有範例。看建議內容推測，最初的問題在於要如何知道 server 可接受的參數或格式？現在常見的做法像是提供 Swagger 文件，或是實作 [HATEOAS](https://openhome.cc/Gossip/Spring/HATEOAS.html) 的概念，讓 API 的回傳成為文件，也有助於解決最初的問題。
+- [HTTP 1.0](https://datatracker.ietf.org/doc/html/rfc1945)
+	- HTTP 0.9 出來之後，後來各家瀏覽器和伺服器都開始各自開幹，沒有統一標準，於是就會遇到不合規格的瀏覽器和伺服器無法正常運作的問題
+	- 這份 RFC 的分類是 Informational，只是記錄各家常見的實作為何而已，還不算是標準，下一版的 HTTP 1.1 才是。
+- [HTTP 1.1](https://datatracker.ietf.org/doc/html/rfc2616) ，以下筆記是參考 [RFC 7231](https://datatracker.ietf.org/doc/html/rfc7231)
+	- 1997 發布第一版，1999 發布了第二版，也是用了 10 多年之久的 HTTP 1.1
+	- > The request method token is the primary source of request semantics; it indicates the purpose for which the client has made this request and what is expected by the client as a successful result.
+		- Method token 指出了 client 的目的，同時它也能預期 client 能拿得到的結果
+		- Method token 目前討論起來，感覺比較像 URI
+	- > The request method's semantics might be further specialized by the semantics of some header fields when present in a request (Section 5) if those additional semantics do not conflict with the method.  For example, a client can send conditional request header fields (Section 5.2) to make the requested action conditional on the current state of the target resource ([RFC7232]).
+		- 某些 Header 語法只要不跟 Method 衝突，它都有可能會影響行為
+		- 像 IF-MATCH 之類的話法，會跟目標資源的狀態有關
+	- > HTTP was originally designed to be usable as an interface to distributed object systems.  The request method was envisioned as applying semantics to a target resource in much the same way as invoking a defined method on an identified object would apply semantics.  The method token is case-sensitive because it might be used as a gateway to object-based systems with case-sensitive method names.
+		- HTTP 是被設計給分散式物件系統存取的介面，而 method 指的是會應用在資源上的方法。這就跟在某個類別上直接定義 method 並呼叫非常像。
+	- > Unlike distributed objects, the standardized request methods in HTTP are not resource-specific, since uniform interfaces provide for better visibility and reuse in network-based systems [REST].  Once defined, a standardized method ought to have the same semantics when applied to any resource, though each resource determines for itself whether those semantics are implemented or allowed.
+		- 跟物件不一樣的是，HTTP 的請求方法並不是依賴於資源的特性，因為介面統一在網路系統上會有更好的可見性和重用性（參考 REST）。
+		- 一個統一的方法，應用在任何資源應該都具有相同的語義。
+	- > All general-purpose servers MUST support the methods GET and HEAD. All other methods are OPTIONAL.
+		- 所有 server 必須支援 GET / HEAD 方法，其他都是可選的
+	- > Additional methods, outside the scope of this specification, have been standardized for use in HTTP.  All such methods ought to be registered within the "Hypertext Transfer Protocol (HTTP) Method Registry" maintained by IANA, as defined in Section 8.1.
+		- 本 RFC 有預定義了 8 種方法，其他的在 [IANA](https://datatracker.ietf.org/doc/html/rfc7231#section-8.1)
+	- > The set of methods allowed by a target resource can be listed in an Allow header field (Section 7.4.1).  However, the set of allowed methods can change dynamically.  When a request method is received that is unrecognized or not implemented by an origin server, the origin server SHOULD respond with the 501 (Not Implemented) status code.  When a request method is received that is known by an origin server but not allowed for the target resource, the origin server SHOULD respond with the 405 (Method Not Allowed) status code.
+		- 資源允許的操作方法可以列在 `Allow` header 裡
+			- [7.4.1](https://datatracker.ietf.org/doc/html/rfc7231#section-7.4.1) 定義當回 405 狀態碼的時候，必須要有 `Allow` header
+		- 當收到一個無法識別或服務沒有實現的方法時，要回 501 狀態碼
+		- 當收到一個可識別且有實作的方法，但資源不允許的操作時要回 405 狀態碼
